@@ -53,7 +53,7 @@ def getMessage(update: Update, context: CallbackContext) -> None:
 
 def main():
     with open('token.txt', 'r') as tokenFile:
-        token = tokenFile.read()
+        token = tokenFile.read().replace('\r', '').replace('\n', '')
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks

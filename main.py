@@ -38,7 +38,7 @@ queueList = {}
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
 def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('Hi! This is a bot that will transform a group of Telegram messages into Ace Attorney scenes. Just re-send me the messages')
+    update.message.reply_text('Hi! This is a bot that will transform a group of Telegram messages into Ace Attorney scenes. Just forward me the messages')
 
 
 def about_command(update: Update, context: CallbackContext) -> None:

@@ -24,7 +24,7 @@ class Queue:
             self.lastSchedule = threading.Timer(5.0, self.createVideo)
             self.lastSchedule.start()
         else:
-            update.message.reply_text('You have to resend me a group of messages')
+            update.message.reply_text('You have to forward me a group of messages')
     
     def createVideo(self):
         thread = []

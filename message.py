@@ -1,9 +1,10 @@
 from telegram import Update
+import re
 
 class Message:
     def __init__(self, update: Update):
         self.user = User(update.message.forward_from or update.message.forward_sender_name)
-        self.text = update.message.text
+        self.text = re.sub(r'(https?)\S*', '(link)', update.message.text)
 
 class User:
     def __init__(self, user):

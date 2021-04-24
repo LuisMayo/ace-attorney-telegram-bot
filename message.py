@@ -7,8 +7,8 @@ class Message:
             possible_text = update.message.caption
             photo = get_closest(update.message.photo, [85, 85])
             file_id = photo.file_id
-            newFile = updater.get_file(file_id)
-            file_name = photo.file_unique_id
+            newFile = updater.bot.get_file(file_id)
+            file_name = photo.file_unique_id + '.png'
             newFile.download(file_name)
             self.evidence = file_name
         else:

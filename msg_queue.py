@@ -9,16 +9,17 @@ import os
 
 
 class Queue:
-    def __init__(self, update: Update, chatList):
+    def __init__(self, update: Update, chatList, updater):
         self.update = update
         self.messages = []
         self.chatId = update.message.chat.id
         self.chatList = chatList
         self.lastSchedule = None
+        self.updater = updater
 
     def addMessage(self, update):
         if (update.message.forward_from != None or update.message.forward_sender_name != None):
-            self.messages.append(Message(update))
+            self.messages.append(Message(update, self.updater))
             if (self.lastSchedule != None):
                 self.lastSchedule.cancel()
             self.lastSchedule = threading.Timer(5.0, self.createVideo)
@@ -42,6 +43,17 @@ class Queue:
             anim.comments_to_scene(thread, characters, output_filename=output_filename)
             with open(output_filename, 'rb') as video:
                 self.update.message.reply_video(video, timeout=120)
-            os.remove(output_filename)
+            self.clean(output_filename, thread)
         else:
             self.update.message.reply_text("There should be at least two people in the conversation")
+            self.clean(output_filename, thread)
+    def clean(self, output_filename: str, thread: list):
+        try:
+            os.remove(output_filename)
+        except Exception as e:
+            print(e)
+        try:
+            for msg in thread:
+                os.remove(msg.evidence)
+        except Exception as e:
+            print(e)

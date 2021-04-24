@@ -41,9 +41,9 @@ class Queue:
             characters = anim.get_characters(most_common)
             output_filename = str(self.chatId) + '.mp4'
             anim.comments_to_scene(thread, characters, output_filename=output_filename)
-            # with open(output_filename, 'rb') as video:
-            #     self.update.message.reply_video(video, timeout=120)
-            # self.clean(output_filename, thread)
+            with open(output_filename, 'rb') as video:
+                self.update.message.reply_video(video, timeout=120)
+            self.clean(output_filename, thread)
         else:
             self.update.message.reply_text("There should be at least two people in the conversation")
             self.clean(output_filename, thread)

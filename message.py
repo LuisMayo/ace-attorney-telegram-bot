@@ -14,7 +14,7 @@ class Message:
         else:
             possible_text = update.message.text
             self.evidence = None
-        self.text = re.sub(r'(https?)\S*', '(link)', possible_text)
+        self.text = re.sub(r'(https?)\S*', '(link)', possible_text or '...')
         self.user = User(update.message.forward_from or update.message.forward_sender_name)
 
 class User:

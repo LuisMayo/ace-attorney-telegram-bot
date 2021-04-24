@@ -47,8 +47,9 @@ def about_command(update: Update, context: CallbackContext) -> None:
 
 
 def getMessage(update: Update, context: CallbackContext) -> None:
+    global updater
     if (not update.message.chat.id in queueList or queueList[update.message.chat.id] == None):
-        queueList[update.message.chat.id] = Queue(update, queueList)
+        queueList[update.message.chat.id] = Queue(update, queueList, updater)
     queueList[update.message.chat.id].addMessage(update)
 
 def main():
@@ -58,6 +59,7 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
+    global updater
     updater = Updater(token, use_context=True)
 
     # Get the dispatcher to register handlers
@@ -68,7 +70,7 @@ def main():
     dispatcher.add_handler(CommandHandler("about", about_command))
 
     # on noncommand i.e message - echo the message on Telegram
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, getMessage))
+    dispatcher.add_handler(MessageHandler((Filters.text | Filters.photo) & ~Filters.command, getMessage))
 
     # Start the Bot
     updater.start_polling()

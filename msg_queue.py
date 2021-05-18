@@ -1,4 +1,3 @@
-import sched, time
 import threading
 from comment_list_bridge import Comment
 from collections import Counter 
@@ -6,10 +5,12 @@ from telegram import Update
 from message import Message
 import anim
 import os
+from telegram.ext import Updater
+from telegram import ChatAction
 
 
 class Queue:
-    def __init__(self, update: Update, chatList, updater):
+    def __init__(self, update: Update, chatList, updater: Updater):
         self.update = update
         self.messages = []
         self.chatId = update.message.chat.id
@@ -28,6 +29,7 @@ class Queue:
             update.message.reply_text('You have to forward me a group of messages')
     
     def createVideo(self):
+        self.updater.bot.send_chat_action(self.chatId, ChatAction.RECORD_VIDEO)
         thread = []
         users_to_names = {}
         counter = Counter()
@@ -40,8 +42,10 @@ class Queue:
             most_common = [users_to_names[t[0]] for t in counter.most_common()]
             characters = anim.get_characters(most_common)
             output_filename = str(self.chatId) + '.mp4'
+            self.updater.bot.send_chat_action(self.chatId, ChatAction.RECORD_VIDEO)
             anim.comments_to_scene(thread, characters, output_filename=output_filename)
             with open(output_filename, 'rb') as video:
+                self.updater.bot.send_chat_action(self.chatId, ChatAction.UPLOAD_VIDEO)
                 self.update.message.reply_video(video, timeout=120)
             self.clean(output_filename, thread)
         else:

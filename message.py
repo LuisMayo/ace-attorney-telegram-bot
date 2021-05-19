@@ -1,3 +1,4 @@
+from objection_engine.beans.comment import Comment
 from telegram import Update
 import re
 
@@ -16,12 +17,15 @@ class Message:
             self.evidence = None
         self.text = re.sub(r'(https?)\S*', '(link)', possible_text or '...')
         self.user = User(update.message.forward_from or update.message.forward_sender_name)
+    
+    def to_message(self):
+        return Comment(text_content=self.text, user_id=self.user.id, user_name=self.user.name, evidence_path=self.evidence)
 
 class User:
     def __init__(self, user):
         if (isinstance(user, str)):
             self.name = user
-            self.id = user
+            self.id = None
         else:
             self.name = user.first_name
             self.id = user.id

@@ -17,7 +17,7 @@ bot.
 """
 
 import sys
-sys.path.insert(0, './ace-attorney-reddit-bot')
+sys.path.insert(0, './objection_engine')
 
 import logging
 

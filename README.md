@@ -23,7 +23,7 @@ git clone --recursive https://github.com/LuisMayo/ace-attorney-telegram-bot
 2. Install dependencies of this repo and the child repo
 ``` bash
 python -m pip install -r requirements.txt
-python -m pip install -r ace-attorney-reddit-bot/requirements.txt
+python -m pip install -r objection_engine/requirements.txt
 ```
 
 3. Put yout Telegram Token in a `token.txt` file

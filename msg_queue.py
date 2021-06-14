@@ -45,8 +45,8 @@ class Queue:
             os.remove(output_filename)
         except Exception as e:
             print(e)
-        try:
-            for msg in thread:
-                os.remove(msg.evidence)
-        except Exception as e:
-            print(e)
+        for msg in thread:
+            try:
+                os.remove(msg.evidence_path)
+            except Exception as e:
+                print(e)

@@ -8,15 +8,21 @@ class Message:
             possible_text = update.message.caption
             photo = get_closest(update.message.photo, [85, 85])
             file_id = photo.file_id
-            newFile = updater.bot.get_file(file_id)
-            file_name = photo.file_unique_id + '.png'
-            newFile.download(file_name)
-            self.evidence = file_name
+            self.downloadEvidence(updater, file_id, photo.file_unique_id)
+        elif (update.message.sticker is not None):
+            possible_text = None
+            self.downloadEvidence(updater, update.message.sticker.file_id, update.message.sticker.file_unique_id)
         else:
             possible_text = update.message.text
             self.evidence = None
         self.text = re.sub(r'(https?)\S*', '(link)', possible_text or '...')
         self.user = User(update.message.forward_from or update.message.forward_sender_name)
+
+    def downloadEvidence(self, updater, file_id, unique_id):
+        newFile = updater.bot.get_file(file_id)
+        file_name = unique_id + '.png'
+        newFile.download(file_name)
+        self.evidence = file_name
     
     def to_message(self):
         return Comment(text_content=self.text, user_id=self.user.id, user_name=self.user.name, evidence_path=self.evidence)

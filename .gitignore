@@ -128,3 +128,4 @@ dmypy.json
 assets/
 
 token.txt
+.vscode/settings.json

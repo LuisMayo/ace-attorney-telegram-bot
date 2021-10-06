@@ -1,3 +1,4 @@
 [submodule "objection_engine"]
 	path = objection_engine
 	url = https://github.com/LuisMayo/objection_engine
+	branch = main

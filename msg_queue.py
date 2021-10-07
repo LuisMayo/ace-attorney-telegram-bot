@@ -17,7 +17,7 @@ class Queue:
         self.lastSchedule = None
         self.updater = updater
     @staticmethod
-    def estimate_time(thread):
+    def estimate_time(self,thread):
         eta = 0 
         # amount of seconds for one char
         char_rate = 0.089
@@ -56,7 +56,7 @@ class Queue:
         # Thread is populated
         output_filename = str(self.chatId) + '.mp4'
         self.updater.bot.send_chat_action(self.chatId, ChatAction.RECORD_VIDEO)
-        eta_secs = estimate_time(thread)
+        eta_secs = self.estimate_time(self,thread)
         self.updater.bot.send_message(
             self.chatId,
             text=(

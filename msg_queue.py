@@ -33,12 +33,43 @@ class Queue:
         self.chatList[self.chatId] = None
         for message in self.messages:
             thread.append(message.to_message())
+        # Thread is populated
         output_filename = str(self.chatId) + '.mp4'
         self.updater.bot.send_chat_action(self.chatId, ChatAction.RECORD_VIDEO)
+        def _estimate_time(thread):
+            eta = 0 
+            # amount of seconds for one char
+            char_rate = 0.09
+            # amount of seconds for one evidence
+            evidence_rate = 2
+            
+            total_chars = 0
+            evidences = 0
+            for item in thread :
+                total_chars += len(item.text_content)
+                # Populates character length
+                if not item.evidence_path == None:
+                    evidences += 1
+                    # Populates evidences 
+            time_from_chars = char_rate * total_chars
+            time_from_evidence = evidence_rate * evidences
+            eta += time_from_chars
+            eta += time_from_evidence
+            return round(float(eta) , 2)
+        eta_secs = _estimate_time(thread)
+        self.updater.bot.send_message(
+            self.chatId,
+            text=(
+                'Started processing video.\n\n'
+                f'ETA: {int(eta_secs/60)} min(s) {round(eta_secs%60,2)} secs.'))
         render_comment_list(thread, output_filename=output_filename)
+        self.updater.bot.send_message(
+            self.chatId,
+            text=('Finished processing video. Uploading ... '))
         with open(output_filename, 'rb') as video:
             self.updater.bot.send_chat_action(self.chatId, ChatAction.UPLOAD_VIDEO)
             self.update.message.reply_video(video, timeout=120)
+        
         self.clean(output_filename, thread)
     def clean(self, output_filename: str, thread: list):
         try:

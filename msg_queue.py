@@ -16,6 +16,26 @@ class Queue:
         self.chatList = chatList
         self.lastSchedule = None
         self.updater = updater
+    @staticmethod
+    def estimate_time(thread):
+        eta = 0 
+        # amount of seconds for one char
+        char_rate = 0.089
+        # amount of seconds for one evidence
+        evidence_rate = 2
+        total_chars = 0
+        evidences = 0
+        for item in thread :
+            total_chars += len(item.text_content)
+            # Populates character length
+            if not item.evidence_path == None:
+                evidences += 1
+                # Populates evidences 
+        time_from_chars = char_rate * total_chars
+        time_from_evidence = evidence_rate * evidences
+        eta += time_from_chars
+        eta += time_from_evidence
+        return round(float(eta) , 2)
 
     def addMessage(self, update):
         if (update.message.forward_from != None or update.message.forward_sender_name != None):
@@ -26,7 +46,7 @@ class Queue:
             self.lastSchedule.start()
         else:
             update.message.reply_text('You have to forward me a group of messages')
-    
+
     def createVideo(self):
         self.updater.bot.send_chat_action(self.chatId, ChatAction.RECORD_VIDEO)
         thread = []
@@ -36,27 +56,7 @@ class Queue:
         # Thread is populated
         output_filename = str(self.chatId) + '.mp4'
         self.updater.bot.send_chat_action(self.chatId, ChatAction.RECORD_VIDEO)
-        def _estimate_time(thread):
-            eta = 0 
-            # amount of seconds for one char
-            char_rate = 0.09
-            # amount of seconds for one evidence
-            evidence_rate = 2
-            
-            total_chars = 0
-            evidences = 0
-            for item in thread :
-                total_chars += len(item.text_content)
-                # Populates character length
-                if not item.evidence_path == None:
-                    evidences += 1
-                    # Populates evidences 
-            time_from_chars = char_rate * total_chars
-            time_from_evidence = evidence_rate * evidences
-            eta += time_from_chars
-            eta += time_from_evidence
-            return round(float(eta) , 2)
-        eta_secs = _estimate_time(thread)
+        eta_secs = estimate_time(thread)
         self.updater.bot.send_message(
             self.chatId,
             text=(

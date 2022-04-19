@@ -62,7 +62,7 @@ class Queue:
             text=(
                 'Started processing video.\n\n'
                 f'ETA: {int(eta_secs/60)} min(s) {round(eta_secs%60,2)} secs.'))
-        render_comment_list(thread, output_filename=output_filename)
+        render_comment_list(thread, output_filename=output_filename, resolution_scale=2)
         self.updater.bot.send_message(
             self.chatId,
             text=('Finished processing video. Uploading ... '))

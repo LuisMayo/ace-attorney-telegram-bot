@@ -19,10 +19,9 @@
 ```
 git clone --recursive https://github.com/LuisMayo/ace-attorney-telegram-bot
 ```
-2. Install dependencies of this repo and the child repo. Refer to [objection engine's install instructions](https://github.com/LuisMayo/objection_engine/blob/main/README.md#installing) for any problems you may encounter
+2. Install dependencies of this repo. Refer to [objection engine's install instructions](https://github.com/LuisMayo/objection_engine/blob/main/README.md#installing) for any problems you may encounter
 ``` bash
 python -m pip install -r requirements.txt
-python -m pip install -r objection_engine/requirements.txt
 ```
 
 3. Put yout Telegram Token in a `token.txt` file
